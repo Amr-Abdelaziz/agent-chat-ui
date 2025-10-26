@@ -12,7 +12,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PanelRightOpen, PanelRightClose } from "lucide-react";
+import { PanelRightOpen, PanelRightClose, Trash2 } from "lucide-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 function ThreadList({
@@ -23,6 +23,7 @@ function ThreadList({
   onThreadClick?: (threadId: string) => void;
 }) {
   const [threadId, setThreadId] = useQueryState("threadId");
+  const { deleteThread } = useThreads();
 
   return (
     <div className="flex h-full w-full flex-col items-start justify-start gap-2 overflow-y-scroll [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent">
@@ -43,18 +44,40 @@ function ThreadList({
             key={t.thread_id}
             className="w-full px-1"
           >
-            <Button
-              variant="ghost"
-              className="w-[280px] items-start justify-start text-left font-normal"
-              onClick={(e) => {
-                e.preventDefault();
-                onThreadClick?.(t.thread_id);
-                if (t.thread_id === threadId) return;
-                setThreadId(t.thread_id);
-              }}
-            >
-              <p className="truncate text-ellipsis">{itemText}</p>
-            </Button>
+            <div className="flex w-full items-center justify-between gap-2">
+              <Button
+                variant="ghost"
+                className="flex-1 items-start justify-start text-left font-normal"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onThreadClick?.(t.thread_id);
+                  if (t.thread_id === threadId) return;
+                  setThreadId(t.thread_id);
+                }}
+              >
+                <p className="truncate text-ellipsis">{itemText}</p>
+              </Button>
+              <Button
+                variant="ghost"
+                className="p-2 text-rose-600 hover:text-rose-700"
+                aria-label="Delete thread"
+                title="Delete thread"
+                onClick={async (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  try {
+                    await deleteThread(t.thread_id);
+                    if (threadId === t.thread_id) {
+                      setThreadId(null);
+                    }
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
           </div>
         );
       })}
@@ -92,7 +115,7 @@ export default function ThreadHistory() {
       .then(setThreads)
       .catch(console.error)
       .finally(() => setThreadsLoading(false));
-  }, []);
+  }, [getThreads, setThreads, setThreadsLoading]);
 
   return (
     <>

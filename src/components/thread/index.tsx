@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useStreamContext } from "@/providers/Stream";
@@ -13,6 +13,7 @@ import {
   ensureToolCallsHaveResponses,
 } from "@/lib/ensure-tool-responses";
 import { LangGraphLogoSVG } from "../icons/langgraph";
+import { SatelliteOrbitIcon } from "../icons/satellite-orbit";
 import { TooltipIconButton } from "./tooltip-icon-button";
 import {
   ArrowDown,
@@ -142,6 +143,20 @@ export function Thread() {
   const messages = stream.messages;
   const isLoading = stream.isLoading;
 
+  const dedupedMessages = useMemo(() => {
+    const seen = new Set<string>();
+    const result: Message[] = [];
+    for (const m of messages) {
+      const id = m.id;
+      if (id) {
+        if (seen.has(id)) continue;
+        seen.add(id);
+      }
+      result.push(m);
+    }
+    return result;
+  }, [messages]);
+
   const lastError = useRef<string | undefined>(undefined);
 
   const setThreadId = (id: string | null) => {
@@ -259,7 +274,7 @@ export function Thread() {
     <div className="flex h-screen w-full overflow-hidden">
       <div className="relative hidden lg:flex">
         <motion.div
-          className="absolute z-20 h-full overflow-hidden border-r bg-white"
+          className="absolute z-20 h-full overflow-hidden border-r glass"
           style={{ width: 300 }}
           animate={
             isLargeScreen
@@ -360,20 +375,18 @@ export function Thread() {
                     damping: 30,
                   }}
                 >
-                  <LangGraphLogoSVG
+                  <SatelliteOrbitIcon
                     width={32}
                     height={32}
                   />
                   <span className="text-xl font-semibold tracking-tight">
-                    Agent Chat
+                    Gorbit  Chat
                   </span>
                 </motion.button>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex items-center">
-                  <OpenGitHubRepo />
-                </div>
+
                 <TooltipIconButton
                   size="lg"
                   className="p-4"
@@ -399,7 +412,7 @@ export function Thread() {
               contentClassName="pt-8 pb-16  max-w-3xl mx-auto flex flex-col gap-4 w-full"
               content={
                 <>
-                  {messages
+                  {dedupedMessages
                     .filter((m) => !m.id?.startsWith(DO_NOT_RENDER_ID_PREFIX))
                     .map((message, index) =>
                       message.type === "human" ? (
@@ -433,12 +446,12 @@ export function Thread() {
                 </>
               }
               footer={
-                <div className="sticky bottom-0 flex flex-col items-center gap-8 bg-white">
+                <div className="sticky bottom-0 flex flex-col items-center gap-8 bg-transparent">
                   {!chatStarted && (
                     <div className="flex items-center gap-3">
-                      <LangGraphLogoSVG className="h-8 flex-shrink-0" />
+                      <SatelliteOrbitIcon className="h-8 w-8 flex-shrink-0 text-primary" />
                       <h1 className="text-2xl font-semibold tracking-tight">
-                        Agent Chat
+                        Gorbit Chat
                       </h1>
                     </div>
                   )}
