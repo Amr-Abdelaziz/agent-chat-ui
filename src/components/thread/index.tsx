@@ -559,7 +559,7 @@ export function Thread() {
                           variant="outline"
                           className="text-xs h-8"
                           onClick={() => {
-                            setInput("How do I create a new customer in Odoo?");
+                            setInput("Count how many active employees we have");
                             const form = document.querySelector('form');
                             if (form) form.requestSubmit();
                           }}
@@ -571,7 +571,7 @@ export function Thread() {
                           variant="outline"
                           className="text-xs h-8"
                           onClick={() => {
-                            setInput("How do I generate a sales report for this quarter?");
+                            setInput("Add a new product called 'Premium Widget' with price $99.99");
                             const form = document.querySelector('form');
                             if (form) form.requestSubmit();
                           }}
@@ -583,7 +583,7 @@ export function Thread() {
                           variant="outline"
                           className="text-xs h-8"
                           onClick={() => {
-                            setInput("How do I manage inventory and stock levels?");
+                            setInput("Find products with stock below 10 units");
                             const form = document.querySelector('form');
                             if (form) form.requestSubmit();
                           }}
