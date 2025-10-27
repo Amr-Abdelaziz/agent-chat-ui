@@ -564,7 +564,7 @@ export function Thread() {
                             if (form) form.requestSubmit();
                           }}
                         >
-                          Create Customer
+                          Count Employees
                         </Button>
                         <Button
                           type="button"
@@ -576,19 +576,19 @@ export function Thread() {
                             if (form) form.requestSubmit();
                           }}
                         >
-                          Sales Report
+                          Add a new product
                         </Button>
                         <Button
                           type="button"
                           variant="outline"
                           className="text-xs h-8"
                           onClick={() => {
-                            setInput("Find products with stock below 10 units");
+                            setInput("Show me the top 5 customers");
                             const form = document.querySelector('form');
                             if (form) form.requestSubmit();
                           }}
                         >
-                          Manage Inventory
+                          Show customers
                         </Button>
                       </div>
                     </form>
