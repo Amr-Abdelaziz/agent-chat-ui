@@ -551,6 +551,46 @@ export function Thread() {
                           </Button>
                         )}
                       </div>
+
+                      {/* Example question buttons for Odoo ERP */}
+                      <div className="flex flex-wrap gap-2 justify-center pt-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="text-xs h-8"
+                          onClick={() => {
+                            setInput("How do I create a new customer in Odoo?");
+                            const form = document.querySelector('form');
+                            if (form) form.requestSubmit();
+                          }}
+                        >
+                          Create Customer
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="text-xs h-8"
+                          onClick={() => {
+                            setInput("How do I generate a sales report for this quarter?");
+                            const form = document.querySelector('form');
+                            if (form) form.requestSubmit();
+                          }}
+                        >
+                          Sales Report
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="text-xs h-8"
+                          onClick={() => {
+                            setInput("How do I manage inventory and stock levels?");
+                            const form = document.querySelector('form');
+                            if (form) form.requestSubmit();
+                          }}
+                        >
+                          Manage Inventory
+                        </Button>
+                      </div>
                     </form>
                   </div>
                 </div>
